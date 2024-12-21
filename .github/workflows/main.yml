@@ -19,7 +19,7 @@ jobs:
         sudo systemctl restart xrdp
     - name: Set RDP Credentials
       run: |
-        echo -e "myuser\123456789" | sudo chpasswd
+            echo "myuser:mypassword" | sudo chpasswd
     - name: Start XRDP
       run: |
         sudo systemctl start xrdp
