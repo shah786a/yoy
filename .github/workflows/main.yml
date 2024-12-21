@@ -1,0 +1,28 @@
+name: Linux RDP
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-linux:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install XFCE Desktop and XRDP
+      run: |
+        sudo apt update
+        sudo apt install -y xfce4 xfce4-goodies xrdp
+        sudo systemctl enable xrdp
+        echo xfce4-session >~/.xsession
+    - name: Configure XRDP
+      run: |
+        sudo sed -i 's/3389/3390/' /etc/xrdp/xrdp.ini
+        sudo systemctl restart xrdp
+    - name: Set RDP Credentials
+      run: |
+        echo -e "myuser\nmypassword" | sudo chpasswd
+    - name: Start XRDP
+      run: |
+        sudo systemctl start xrdp
+    - name: Show Public IP
+      run: |
+        echo "Your RDP server is ready. Use port 3390 to connect."
